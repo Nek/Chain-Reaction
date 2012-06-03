@@ -1,4 +1,4 @@
 Chain-Reaction
 ==============
 
-Chain Reaction – game built on Animatron engine
+Chain Reaction – game built on the Animatron engine
