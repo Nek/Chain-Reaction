@@ -19,11 +19,31 @@
       function start() {
           var b = Builder._$, C = anm.C;
 
+          var fhsv = Builder.fhsv;
+
+          var circle_thingy = b("circle thingy").circle([0, 0], 12)
+                                  .fill(fhsv(1, 1, 1, 1))
+                                  .stroke(fhsv(1, .5, .5, 1))
+                                  .modify(function(t) {
+                                        if (this.speed === undefined) this.speed = [1, 1];
+                                        this.x += this.speed[0];
+                                        this.y += this.speed[1];
+                                        return true;
+                                  });
+
+          var game_screen = b();
+          game_screen
+                  .add(
+                        b(circle_thingy).move([10,10]))
+                  .add(
+                        b(circle_thingy).move([30,10]))
+                  .add(
+                        b(circle_thingy).move([50,40]));
+
+
+
           // canvas1
-          var scene1 = b().rect([100, 70], [70, 70])
-                          .fill('#009')
-                          .stroke('#f00', 3);
-          createPlayer('canvas1').load(scene1);
+          createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': 800, 'height':600}}).load(game_screen).play();
 
       }
     </script>
@@ -32,7 +52,7 @@
   <body onload="start();">
     <h1>Chain Reaction – game built on The Animatron engine</h1>
 
-    <canvas id="canvas1"></canvas>
+    <canvas id="gameCanvas"></canvas>
 
     <div id="copyright"><span>© 2011-2012 by Animatron.</span></div>
 
