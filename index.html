@@ -21,29 +21,61 @@
 
           var fhsv = Builder.fhsv;
 
-          var circle_thingy = b("circle thingy").circle([0, 0], 12)
-                                  .fill(fhsv(1, 1, 1, 1))
-                                  .stroke(fhsv(1, .5, .5, 1))
-                                  .modify(function(t) {
-                                        if (this.speed === undefined) this.speed = [1, 1];
-                                        this.x += this.speed[0];
-                                        this.y += this.speed[1];
-                                        return true;
-                                  });
+        var WIDTH = 400;
+        var HEIGHT = 300;
+        var RADIUS = 10;
 
-          var game_screen = b();
+        var init = function(t) {
+                if (this.speed === undefined) {
+                    console.log(this.x);
+                    console.log(this.y);
+                    this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+                }
+
+                return true;
+            };
+
+        var move = function(t){
+                        this.x += this.speed[0];
+                        this.y += this.speed[1];
+                        if (this.x > WIDTH) this.speed[0] = -this.speed[0];
+                        if (this.x < 0) this.speed[0] = -this.speed[0];
+                        if (this.y > HEIGHT) this.speed[1] = -this.speed[1];
+                        if (this.y < 0) this.speed[1] = -this.speed[1];
+                        return true;
+                    };
+
+        var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+            .fill(fhsv(1, 1, 1, 1))
+            .stroke(fhsv(1, .5, .5, 1));
+
+
+
+
+          var game_screen = b('scene').band([0, Number.MAX_VALUE]);
           game_screen
                   .add(
-                        b(circle_thingy).move([10,10]))
+                        b(circle_thingy)
+                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
+                            .modify(init)
+                            .modify(move)
+                      )
                   .add(
-                        b(circle_thingy).move([30,10]))
+                        b(circle_thingy)
+                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
+                            .modify(init)
+                            .modify(move)
+                        )
+
                   .add(
-                        b(circle_thingy).move([50,40]));
-
-
+                        b(circle_thingy)
+                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
+                            .modify(init)
+                            .modify(move)
+                        )
 
           // canvas1
-          createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': 800, 'height':600}}).load(game_screen).play();
+          createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}}).load(game_screen).play();
 
       }
     </script>
