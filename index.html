@@ -26,41 +26,72 @@
         var RADIUS = 10;
 
         var countFrames = function() {
-            this.currentFrame = this.currentFrame || 0;
-            this.currentFrame += 1;
+            if (this.currentFrame === undefined) this.currentFrame = 0;
+            else this.currentFrame += 1;
             return true;
         };
 
-        var init = function(t) {
 
-
-                if (this.currentFrame === 2 ) {
-                    this.name = Math.random();
-                    console.log(this.name);
-
-                    this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
-                    this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
-                }
-                if (this.speed === undefined) {
-                    this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+        var modifyOn = function(cond, l) {
+            return function(t, d) {
+                if (cond.call(this)) {
+                    return l.call(this, t, d);
                 }
                 return true;
-            };
+            }
+        };
+
+        var currentFrameEq = function(i) {
+            return function() {return this.currentFrame === i};
+        };
+
+        var currentFrameGt = function(i) {
+            return function() {return this.currentFrame > i};
+        };
+
+        var currentFrameLt = function(i) {
+            return function() {return this.currentFrame < i};
+        };
+
+        var onFrame = function(i, l) {
+            return modifyOn(currentFrameEq(i), l);
+        };
+
+       var afterFrame = function(i, l) {
+                  return modifyOn(currentFrameGt(i), l);
+              };
+
+//                function(i, l) {
+//            return function(t, d) {
+//                if (this.currentFrame === i ) {
+//                    return l.call(this, t, d);
+//                }
+//                return true;
+//            }
+//        };
+
+        var init = function(t) {
+            console.log(this.currentFrame);
+            this.name = Math.random();
+            this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
+            this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
+            this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+            return true;
+        };
+
+        var logFrame = function() {
+            console.log(this.currentFrame);
+            return true;
+        };
 
         var move = function(t){
-            console.log("move");
-            console.log("move");
-
-            if (this.currentFrame > 2 ) {
                 if (this._.speed != undefined) {
                     this.x = this._.x + this._.speed[0];
                     this.y = this._.y + this._.speed[1];
                 }
-            }
                 return true;
             };
         var update_speed = function(t) {
-            if (this.currentFrame > 2 ) {
 
                 if (this.speed != undefined && this._.speed != undefined) {
                     if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
@@ -68,7 +99,6 @@
                     if (this.y > HEIGHT) this.speed[1] = -this._.speed[1];
                     if (this.y < 0) this.speed[1] = -this._.speed[1];
                 }
-            }
             return true;
         };
 
@@ -76,12 +106,9 @@
             .fill(fhsv(1, 1, 1, 1))
             .stroke(fhsv(1, .5, .5, 1))
             .modify(countFrames)
-            .modify(init)
-            .modify(move)
-            .modify(update_speed);
-
-
-
+            .modify(onFrame(1, init))
+            .modify(afterFrame(1, move))
+            .modify(afterFrame(1, update_speed));
 
           var level1 = b('scene').band([0, Number.MAX_VALUE]);
           level1
