@@ -7,89 +7,95 @@
 
 <!DOCTYPE html>
 <html>
-  <head>
+<head>
     <title>The Animatron HTML5 Player Demo</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <link rel="stylesheet" href="./main.css" type="text/css" />
+    <link rel="stylesheet" href="./main.css" type="text/css"/>
     <script src="../player/vendor/matrix.js" type="text/javascript"></script>
     <script src="../player/player.js" type="text/javascript"></script>
     <script src="../player/builder.js" type="text/javascript"></script>
     <script src="../player/animatron_import.js" type="text/javascript"></script>
     <script type="text/javascript">
-      function start() {
-          var b = Builder._$, C = anm.C;
+        function start() {
+            var b = Builder._$, C = anm.C;
 
-        var fhsv = Builder.fhsv;
+            var fhsv = Builder.fhsv;
 
-        var WIDTH = 400;
-        var HEIGHT = 300;
-        var RADIUS = 10;
+            var WIDTH = 400;
+            var HEIGHT = 300;
+            var RADIUS = 10;
 
-        var countFrames = function() {
-            if (this.currentFrame === undefined) this.currentFrame = 0;
-            else this.currentFrame += 1;
-            return true;
-        };
-
-        var doIfThis = function(cond, l) {
-            return function(t, d) {
-                if (cond.call(this)) {
-                    return l.call(this, t, d);
-                }
+            var countFrames = function () {
+                if (this.currentFrame === undefined) this.currentFrame = 0;
+                else this.currentFrame += 1;
                 return true;
-            }
-        };
+            };
 
-        var doIf = function(cond, l) {
-              return function(t, d) {
-                  if (cond()) {
-                      return l.call(this, t, d);
-                  }
-                  return true;
-              }
-          };
+            var doIfThis = function (cond, l) {
+                return function (t, d) {
+                    if (cond.call(this)) {
+                        return l.call(this, t, d);
+                    }
+                    return true;
+                }
+            };
 
-        var currentFrameEq = function(i) {
-            return function() {return this.currentFrame === i};
-        };
+            var doIf = function (cond, l) {
+                return function (t, d) {
+                    if (cond()) {
+                        return l.call(this, t, d);
+                    }
+                    return true;
+                }
+            };
 
-        var currentFrameGt = function(i) {
-            return function() {return this.currentFrame > i};
-        };
+            var currentFrameEq = function (i) {
+                return function () {
+                    return this.currentFrame === i
+                };
+            };
 
-        var currentFrameLt = function(i) {
-            return function() {return this.currentFrame < i};
-        };
+            var currentFrameGt = function (i) {
+                return function () {
+                    return this.currentFrame > i
+                };
+            };
 
-        var onFrame = function(i, l) {
-            return doIfThis(currentFrameEq(i), l);
-        };
+            var currentFrameLt = function (i) {
+                return function () {
+                    return this.currentFrame < i
+                };
+            };
 
-       var afterFrame = function(i, l) {
-                  return doIfThis(currentFrameGt(i), l);
-              };
+            var onFrame = function (i, l) {
+                return doIfThis(currentFrameEq(i), l);
+            };
 
-        var init = function(t) {
-            this.name = Math.random();
-            this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
-            this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
-            this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
-            return true;
-        };
+            var afterFrame = function (i, l) {
+                return doIfThis(currentFrameGt(i), l);
+            };
 
-        var logFrame = function() {
-            console.log(this.currentFrame);
-            return true;
-        };
+            var init = function (t) {
+                this.name = Math.random();
+                this.x = Math.random() * (WIDTH - RADIUS * 5) + 2.5 * RADIUS;
+                this.y = Math.random() * (HEIGHT - RADIUS * 5) + 2.5 * RADIUS;
+                this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+                return true;
+            };
 
-        var move = function(t){
+            var logFrame = function () {
+                console.log(this.currentFrame);
+                return true;
+            };
+
+            var move = function (t) {
                 if (this._.speed != undefined) {
                     this.x = this._.x + this._.speed[0];
                     this.y = this._.y + this._.speed[1];
                 }
                 return true;
             };
-        var updateSpeed = function(t) {
+            var updateSpeed = function (t) {
 
                 if (this.speed != undefined && this._.speed != undefined) {
                     if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
@@ -97,44 +103,44 @@
                     if (this.y > HEIGHT) this.speed[1] = -this._.speed[1];
                     if (this.y < 0) this.speed[1] = -this._.speed[1];
                 }
-            return true;
-        };
+                return true;
+            };
 
-        var explode = function() {
-            console.log("EXPLOSION OF ", this);
-        };
+            var explode = function () {
+                console.log("EXPLOSION OF ", this);
+            };
 
-        var clicks = 3;
+            var clicks = 3;
 
-        var hasClicks = function() {
-            console.log(clicks,"CLICKS LEFT");
-            return clicks > 0;
-        };
+            var hasClicks = function () {
+                console.log(clicks, "CLICKS LEFT");
+                return clicks > 0;
+            };
 
-          var blockDead = function() {
-            return !this.dead;
-          };
+            var blockDead = function () {
+                return !this.dead;
+            };
 
-        var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
-            .fill(fhsv(1, 1, 1, 1))
-            .stroke(fhsv(1, .5, .5, 1))
-            .modify(blockDead)
-            .modify(countFrames)
-            .modify(onFrame(1, init))
-            .modify(afterFrame(1, move))
-            .modify(afterFrame(1, updateSpeed));
+            var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+                    .fill(fhsv(1, 1, 1, 1))
+                    .stroke(fhsv(1, .5, .5, 1))
+                    .modify(blockDead)
+                    .modify(countFrames)
+                    .modify(onFrame(1, init))
+                    .modify(afterFrame(1, move))
+                    .modify(afterFrame(1, updateSpeed));
 
-        var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
-            .fill(fhsv(.5, 1, 1, 1))
-            .stroke(fhsv(.5, .5, .5, 1));
+            var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+                    .fill(fhsv(.5, 1, 1, 1))
+                    .stroke(fhsv(.5, .5, .5, 1));
 
 
-          var addCollisionLogic = function(level) {
-              return function() {
-                  for (var i = 0; i < level.v.children.length; i ++) {
-                    var el = level.v.children[i];
-                      var handler = (function(el) {
-                          return function(evt) {
+            var addCollisionLogic = function (level) {
+                return function () {
+                    for (var i = 0; i < level.v.children.length; i++) {
+                        var el = level.v.children[i];
+                        var handler = (function (el) {
+                            return function (evt) {
                                 if (el.contains(evt.pos)) {
                                     this.dead = true;
                                     var exp = b(explosion);
@@ -143,57 +149,37 @@
                                     level.add(exp);
                                 }
                                 return true;
-                          }
-                      })(el);
-                      el.on(C.X_MCLICK, handler);
-                  }
-                  return true;
-              }
-          };
+                            }
+                        })(el);
+                        el.on(C.X_MCLICK, handler);
+                    }
+                    return true;
+                }
+            };
 
-          var level1 = b('scene').band([0, Number.MAX_VALUE]);
-          level1.modify(countFrames);
-          level1.modify(onFrame(1, addCollisionLogic(level1)));
-          level1.add(b(circle_thingy));
+            var level1 = b('scene').band([0, Number.MAX_VALUE]);
+            level1.modify(countFrames);
+            level1.modify(onFrame(1, addCollisionLogic(level1)));
+            level1.add(b(circle_thingy));
 
+            var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
 
+            var startLevel = function (level) {
+                player.load(level).play();
+            };
 
-
-          //level1.on(C.X_MCLICK, function(evt, t) {
-          //    for (var i = 0; i < level1.v.children.length; i ++) {
-          //        console.log(level1.v.children[i].contains(evt.pos));
-          //    }
-          //                if (my_elm.v.contains(evt.pos)) {
-          //                    this.x = evt.pos[0];
-          //                    this.y = evt.pos[1];
-          //                }
-//                          return true;
-//                      });
-//                  .add(b(circle_thingy))
-//                  .add(b(circle_thingy));
-
-          // canvas1
-          var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}});
-
-          var startLevel = function(level) {
-              player.load(level).play();
-          };
-
-          startLevel(level1);
-
-
-
-      }
+            startLevel(level1);
+        }
     </script>
-  </head>
+</head>
 
-  <body onload="start();">
-    <h1>Chain Reaction – game built on The Animatron engine</h1>
+<body onload="start();">
+<h1>Chain Reaction – game built on The Animatron engine</h1>
 
-    <canvas id="gameCanvas"></canvas>
+<canvas id="gameCanvas"></canvas>
 
-    <div id="copyright"><span>© 2011-2012 by Animatron.</span></div>
+<div id="copyright"><span>© 2011-2012 by Animatron.</span></div>
 
-  </body>
+</body>
 
 </html>
