@@ -130,22 +130,28 @@
                     .modify(afterFrame(1, move))
                     .modify(afterFrame(1, updateSpeed));
 
-            var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+            var explosion = b("explosion").band([0, 1]).circle([0, 0], RADIUS)
                     .fill(fhsv(.5, 1, 1, 1))
-                    .stroke(fhsv(.5, .5, .5, 1));
-
+                    .stroke(fhsv(.5, .5, .5, 1))
+                    .xscale([0, 1], [1, 6], C.E_BIN)
+                    .alpha([0, 1], [1, 0], C.E_BIN)
+                    .key("start", 0);
 
             var addCollisionLogic = function (level) {
                 return function () {
                     for (var i = 0; i < level.v.children.length; i++) {
                         var el = level.v.children[i];
                         var handler = (function (el) {
-                            return function (evt) {
+                            return function (evt, time) {
                                 if (el.contains(evt.pos)) {
                                     this.dead = true;
                                     var exp = b(explosion);
                                     exp.v.state.x = this.x;
                                     exp.v.state.y = this.y;
+                                    exp.modify(function() {
+                                        this.key = "start";
+                                        return true;
+                                    });
                                     level.add(exp);
                                 }
                                 return true;
@@ -161,6 +167,11 @@
             level1.modify(countFrames);
             level1.modify(onFrame(1, addCollisionLogic(level1)));
             level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(explosion));
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
 
