@@ -33,17 +33,13 @@
                 }
                 this.count ++;
                 if (this.speed === undefined) {
-
-                    this.speed = [0, 0];//[Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+                    this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
                 }
-
                 return true;
             };
 
         var move = function(t){
                 if (this._.speed != undefined) {
-//                    console.log(this._.x);
-//                    this.x = this._.x + this._.speed[0];
                     this.x = this._.x + this._.speed[0];
                     this.y = this._.y + this._.speed[1];
                 }
@@ -63,9 +59,9 @@
         var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
             .fill(fhsv(1, 1, 1, 1))
             .stroke(fhsv(1, .5, .5, 1))
-            .modify(init);
-            //.modify(move)
-            //.modify(update_speed);
+            .modify(init)
+            .modify(move)
+            .modify(update_speed);
 
 
 
