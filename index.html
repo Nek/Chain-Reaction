@@ -19,35 +19,53 @@
       function start() {
           var b = Builder._$, C = anm.C;
 
-          var fhsv = Builder.fhsv;
+        var fhsv = Builder.fhsv;
 
         var WIDTH = 400;
         var HEIGHT = 300;
         var RADIUS = 10;
 
         var init = function(t) {
+                this.count = this.count || 0;
+                if (this.count === 1 ) {
+                    this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
+                    this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
+                }
+                this.count ++;
                 if (this.speed === undefined) {
-                    console.log(this.x);
-                    console.log(this.y);
-                    this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
+
+                    this.speed = [0, 0];//[Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
                 }
 
                 return true;
             };
 
         var move = function(t){
-                        this.x += this.speed[0];
-                        this.y += this.speed[1];
-                        if (this.x > WIDTH) this.speed[0] = -this.speed[0];
-                        if (this.x < 0) this.speed[0] = -this.speed[0];
-                        if (this.y > HEIGHT) this.speed[1] = -this.speed[1];
-                        if (this.y < 0) this.speed[1] = -this.speed[1];
-                        return true;
-                    };
+                if (this._.speed != undefined) {
+//                    console.log(this._.x);
+//                    this.x = this._.x + this._.speed[0];
+                    this.x = this._.x + this._.speed[0];
+                    this.y = this._.y + this._.speed[1];
+                }
+
+                return true;
+            };
+        var update_speed = function(t) {
+            if (this.speed != undefined && this._.speed != undefined) {
+                if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
+                if (this.x < 0) this.speed[0] = -this._.speed[0];
+                if (this.y > HEIGHT) this.speed[1] = -this._.speed[1];
+                if (this.y < 0) this.speed[1] = -this._.speed[1];
+            }
+            return true;
+        };
 
         var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
             .fill(fhsv(1, 1, 1, 1))
-            .stroke(fhsv(1, .5, .5, 1));
+            .stroke(fhsv(1, .5, .5, 1))
+            .modify(init);
+            //.modify(move)
+            //.modify(update_speed);
 
 
 
@@ -56,23 +74,17 @@
           game_screen
                   .add(
                         b(circle_thingy)
-                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
-                            .modify(init)
-                            .modify(move)
-                      )
-                  .add(
-                        b(circle_thingy)
-                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
-                            .modify(init)
-                            .modify(move)
-                        )
 
-                  .add(
-                        b(circle_thingy)
-                            .move([Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS, Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS])
-                            .modify(init)
-                            .modify(move)
-                        )
+                      );
+//                  .add(
+//                        b(circle_thingy)
+//
+//                        )
+//
+//                  .add(
+//                        b(circle_thingy)
+//
+//                        )
 
           // canvas1
           createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}}).load(game_screen).play();
