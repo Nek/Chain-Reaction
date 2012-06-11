@@ -83,14 +83,22 @@
 
 
 
-          var game_screen = b('scene').band([0, Number.MAX_VALUE]);
-          game_screen
+          var level1 = b('scene').band([0, Number.MAX_VALUE]);
+          level1
+                  .add(b(circle_thingy))
+                  .add(b(circle_thingy))
                   .add(b(circle_thingy));
-//                  .add(b(circle_thingy))
-//                  .add(b(circle_thingy));
 
           // canvas1
-          createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}}).load(game_screen).play();
+          var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}});
+
+          var startLevel = function(level) {
+              player.load(level).play();
+          };
+
+          startLevel(level1);
+
+
 
       }
     </script>
