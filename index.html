@@ -25,13 +25,22 @@
         var HEIGHT = 300;
         var RADIUS = 10;
 
+        var countFrames = function() {
+            this.currentFrame = this.currentFrame || 0;
+            this.currentFrame += 1;
+            return true;
+        };
+
         var init = function(t) {
-                this.count = this.count || 0;
-                if (this.count === 1 ) {
+
+
+                if (this.currentFrame === 2 ) {
+                    this.name = Math.random();
+                    console.log(this.name);
+
                     this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
                     this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
                 }
-                this.count ++;
                 if (this.speed === undefined) {
                     this.speed = [Math.random() > .3 ? 1 : -1, Math.random() > .3 ? 1 : -1];
                 }
@@ -39,19 +48,26 @@
             };
 
         var move = function(t){
+            console.log("move");
+            console.log("move");
+
+            if (this.currentFrame > 2 ) {
                 if (this._.speed != undefined) {
                     this.x = this._.x + this._.speed[0];
                     this.y = this._.y + this._.speed[1];
                 }
-
+            }
                 return true;
             };
         var update_speed = function(t) {
-            if (this.speed != undefined && this._.speed != undefined) {
-                if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
-                if (this.x < 0) this.speed[0] = -this._.speed[0];
-                if (this.y > HEIGHT) this.speed[1] = -this._.speed[1];
-                if (this.y < 0) this.speed[1] = -this._.speed[1];
+            if (this.currentFrame > 2 ) {
+
+                if (this.speed != undefined && this._.speed != undefined) {
+                    if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
+                    if (this.x < 0) this.speed[0] = -this._.speed[0];
+                    if (this.y > HEIGHT) this.speed[1] = -this._.speed[1];
+                    if (this.y < 0) this.speed[1] = -this._.speed[1];
+                }
             }
             return true;
         };
@@ -59,6 +75,7 @@
         var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
             .fill(fhsv(1, 1, 1, 1))
             .stroke(fhsv(1, .5, .5, 1))
+            .modify(countFrames)
             .modify(init)
             .modify(move)
             .modify(update_speed);
@@ -68,19 +85,9 @@
 
           var game_screen = b('scene').band([0, Number.MAX_VALUE]);
           game_screen
-                  .add(
-                        b(circle_thingy)
-
-                      );
-//                  .add(
-//                        b(circle_thingy)
-//
-//                        )
-//
-//                  .add(
-//                        b(circle_thingy)
-//
-//                        )
+                  .add(b(circle_thingy));
+//                  .add(b(circle_thingy))
+//                  .add(b(circle_thingy));
 
           // canvas1
           createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}}).load(game_screen).play();
