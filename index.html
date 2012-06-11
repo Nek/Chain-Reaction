@@ -31,8 +31,7 @@
             return true;
         };
 
-
-        var modifyOn = function(cond, l) {
+        var doIfThis = function(cond, l) {
             return function(t, d) {
                 if (cond.call(this)) {
                     return l.call(this, t, d);
@@ -40,6 +39,15 @@
                 return true;
             }
         };
+
+        var doIf = function(cond, l) {
+              return function(t, d) {
+                  if (cond()) {
+                      return l.call(this, t, d);
+                  }
+                  return true;
+              }
+          };
 
         var currentFrameEq = function(i) {
             return function() {return this.currentFrame === i};
@@ -54,24 +62,14 @@
         };
 
         var onFrame = function(i, l) {
-            return modifyOn(currentFrameEq(i), l);
+            return doIfThis(currentFrameEq(i), l);
         };
 
        var afterFrame = function(i, l) {
-                  return modifyOn(currentFrameGt(i), l);
+                  return doIfThis(currentFrameGt(i), l);
               };
 
-//                function(i, l) {
-//            return function(t, d) {
-//                if (this.currentFrame === i ) {
-//                    return l.call(this, t, d);
-//                }
-//                return true;
-//            }
-//        };
-
         var init = function(t) {
-            console.log(this.currentFrame);
             this.name = Math.random();
             this.x = Math.random()*(WIDTH - RADIUS*5)+2.5*RADIUS;
             this.y = Math.random()*(HEIGHT - RADIUS*5)+2.5*RADIUS;
@@ -91,7 +89,7 @@
                 }
                 return true;
             };
-        var update_speed = function(t) {
+        var updateSpeed = function(t) {
 
                 if (this.speed != undefined && this._.speed != undefined) {
                     if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
@@ -102,19 +100,77 @@
             return true;
         };
 
+        var explode = function() {
+            console.log("EXPLOSION OF ", this);
+        };
+
+        var clicks = 3;
+
+        var hasClicks = function() {
+            console.log(clicks,"CLICKS LEFT");
+            return clicks > 0;
+        };
+
+          var blockDead = function() {
+            return !this.dead;
+          };
+
         var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
             .fill(fhsv(1, 1, 1, 1))
             .stroke(fhsv(1, .5, .5, 1))
+            .modify(blockDead)
             .modify(countFrames)
             .modify(onFrame(1, init))
             .modify(afterFrame(1, move))
-            .modify(afterFrame(1, update_speed));
+            .modify(afterFrame(1, updateSpeed));
+
+        var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+            .fill(fhsv(.5, 1, 1, 1))
+            .stroke(fhsv(.5, .5, .5, 1));
+
+
+          var addCollisionLogic = function(level) {
+              return function() {
+                  for (var i = 0; i < level.v.children.length; i ++) {
+                    var el = level.v.children[i];
+                      var handler = (function(el) {
+                          return function(evt) {
+                                if (el.contains(evt.pos)) {
+                                    this.dead = true;
+                                    var exp = b(explosion);
+                                    exp.v.state.x = this.x;
+                                    exp.v.state.y = this.y;
+                                    level.add(exp);
+                                }
+                                return true;
+                          }
+                      })(el);
+                      el.on(C.X_MCLICK, handler);
+                  }
+                  return true;
+              }
+          };
 
           var level1 = b('scene').band([0, Number.MAX_VALUE]);
-          level1
-                  .add(b(circle_thingy))
-                  .add(b(circle_thingy))
-                  .add(b(circle_thingy));
+          level1.modify(countFrames);
+          level1.modify(onFrame(1, addCollisionLogic(level1)));
+          level1.add(b(circle_thingy));
+
+
+
+
+          //level1.on(C.X_MCLICK, function(evt, t) {
+          //    for (var i = 0; i < level1.v.children.length; i ++) {
+          //        console.log(level1.v.children[i].contains(evt.pos));
+          //    }
+          //                if (my_elm.v.contains(evt.pos)) {
+          //                    this.x = evt.pos[0];
+          //                    this.y = evt.pos[1];
+          //                }
+//                          return true;
+//                      });
+//                  .add(b(circle_thingy))
+//                  .add(b(circle_thingy));
 
           // canvas1
           var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width': WIDTH, 'height': HEIGHT}});
