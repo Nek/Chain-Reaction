@@ -13,8 +13,10 @@
     <link rel="stylesheet" href="./main.css" type="text/css"/>
     <script src="../player/vendor/matrix.js" type="text/javascript"></script>
     <script src="../player/anm.player.js" type="text/javascript"></script>
+    <script src="../player/anm.collisions.js" type="text/javascript"></script>
     <script src="../player/anm.builder.js" type="text/javascript"></script>
     <script src="../player/animatron_import.js" type="text/javascript"></script>
+    <!--<script src="anm.SAT.js" type="text/javascript"></script>-->
     <script type="text/javascript">
         function start() {
             var b = Builder._$, C = anm.C;
@@ -80,7 +82,7 @@
             };
 
             var logFrame = function () {
-                console.log(this.currentFrame);
+                console.log("Current frame:", this.currentFrame);
             };
 
             var move = function (t) {
@@ -90,7 +92,6 @@
                 }
             };
             var updateSpeed = function (t) {
-
                 if (this.speed != undefined && this._.speed != undefined) {
                     if (this.x > WIDTH) this.speed[0] = -this._.speed[0];
                     if (this.x < 0) this.speed[0] = -this._.speed[0];
@@ -99,52 +100,89 @@
                 }
             };
 
-            var explode = function () {
-                console.log("EXPLOSION OF ", this);
-            };
-
             var clicks = 3;
 
             var hasClicks = function () {
-                console.log(clicks, "CLICKS LEFT");
                 return clicks > 0;
             };
 
             var handler = function (evt, time) {
-                                            if (this.$.contains(evt.pos)) {
-                                                var exp = b(explosion);
-                                                exp.v.state.x = this.x;
-                                                exp.v.state.y = this.y;
-                                                exp.band([time, time+1]);
-                                                this.$.parent.add(exp);
-                                                this.$.parent.remove(this.$);
-                                            }
-                                        };
+                console.log("SCENE CLICKED");
+                    if (this.$.contains(evt.pos)) {
+                        this.dead = true;
+                    }
+                };
+            var explodeDead = function(time) {
+                if (this._.dead) {
+                    var exp = b(explosion);
+                    exp.v.state.x = this.x;
+                    exp.v.state.y = this.y;
+                    exp.band([time, time+1]);
+                    this.$.parent.add(exp);
+                    this.$.parent.remove(this.$);
+                }
+            };
 
             var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
                     .fill(fhsv(1, 1, 1, 1))
                     .stroke(fhsv(1, .5, .5, 1))
+                    .modify(explodeDead)
                     .modify(countFrames)
                     .modify(onFrame(1, init))
                     .modify(afterFrame(1, move))
                     .modify(afterFrame(1, updateSpeed))
                     .on(C.X_MCLICK, handler);
 
-            var explosion = b("explosion").band([0, 1]).circle([0, 0], RADIUS)
+            var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
+                    .modify(function(t){
+                        //TODO: remove workaround and use proper t > 1
+                        if (t > .9) {
+                            this.$.parent.remove(this.$);
+                        }
+                    })
                     .fill(fhsv(.5, 1, 1, 1))
                     .stroke(fhsv(.5, .5, .5, 1))
                     .xscale([0, 1], [1, 6], C.E_BIN)
                     .alpha([0, 1], [1, 0], C.E_BIN);
 
-            var detectCollisions = function() {
-                for (var i = 0; i < this.$.children.length; i ++) {
-                    console.log(this.$.children[i]);
+            var detectCollisions = function(t) {
+                var circles = [];
+                var explosions = [];
+                var i, j;
+                for (i = 0; i < this.$.children.length; i ++) {
+                    var el = this.$.children[i];
+                    el.name === "explosion" ? explosions.push(el) : circles.push(el);
+                }
+                for (i = 0; i < explosions.length; i ++) {
+                    for (j = 0; j < circles.length; j ++) {
+                        if (explosions[i].intersects(circles[j], t)) {
+                            circles[j].state.dead = true;
+                        }
+//                        var cd = SAT(explosions[i], circles[j]);
+//                        if (cd) {
+//                            console.log(cd);
+//                            circles[j].state.dead = true;
+//                        }
+                    }
                 }
             };
 
             var level1 = b('scene').band([0, Number.MAX_VALUE]);
             level1.modify(countFrames);
             level1.modify(detectCollisions);
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
