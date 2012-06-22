@@ -189,7 +189,7 @@
             level1.add(b(circle_thingy));
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
-            player.debug = true;
+            player.debug = false;
             var startLevel = function (level) {
                 player.load(level).play();
             };
