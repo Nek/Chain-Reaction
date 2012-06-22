@@ -19,6 +19,7 @@
     <!--<script src="anm.SAT.js" type="text/javascript"></script>-->
     <script type="text/javascript">
         function start() {
+            anm.MODULES['COLLISIONS'].pathCheck = false;
             var b = Builder._$, C = anm.C;
 
             var fhsv = Builder.fhsv;
@@ -133,16 +134,16 @@
                     .on(C.X_MCLICK, handler);
 
             var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
-                    .modify(function(t){
-                        //TODO: remove workaround and use proper t > 1
-                        if (t > .9) {
-                            this.$.parent.remove(this.$);
-                        }
-                    })
                     .fill(fhsv(.5, 1, 1, 1))
                     .stroke(fhsv(.5, .5, .5, 1))
-                    .xscale([0, 1], [1, 6], C.E_BIN)
-                    .alpha([0, 1], [1, 0], C.E_BIN);
+//                    .xscale([0, 1], [1, 6], C.E_BIN)
+                    .alpha([0, 1], [1, 0], C.E_BIN)
+                    .modify(function(t){
+                                            //TODO: remove workaround and use proper t > 1
+                                            if (t > .9) {
+                                                this.$.parent.remove(this.$);
+                                            }
+                                        });
 
             var detectCollisions = function(t) {
                 var circles = [];
@@ -182,9 +183,13 @@
             level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
+            level1.add(b(circle_thingy));
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
-
+            player.debug = true;
             var startLevel = function (level) {
                 player.load(level).play();
             };
