@@ -136,7 +136,7 @@
             var explosion = b("explosion").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
                     .fill(fhsv(.5, 1, 1, 1))
                     .stroke(fhsv(.5, .5, .5, 1))
-//                    .xscale([0, 1], [1, 6], C.E_BIN)
+                    .xscale([0, 1], [1, 6], C.E_BIN)
                     .alpha([0, 1], [1, 0], C.E_BIN)
                     .modify(function(t){
                                             //TODO: remove workaround and use proper t > 1
