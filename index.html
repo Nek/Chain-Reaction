@@ -76,6 +76,7 @@
             };
 
             var init = function (t) {
+                this.dead = false;
                 this.name = Math.random();
                 this.x = Math.random() * (WIDTH - RADIUS * 5) + 2.5 * RADIUS;
                 this.y = Math.random() * (HEIGHT - RADIUS * 5) + 2.5 * RADIUS;
