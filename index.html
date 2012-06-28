@@ -103,10 +103,12 @@
             };
 
             var clicks = 3;
+            var score = 0;
 
             var handler = function (evt, time) {
                     if (clicks > 0 && this.$.contains(evt.pos)) {
                         this.dead = true;
+                        score ++;
                     }
                 };
             var explodeDead = function(time) {
@@ -154,6 +156,7 @@
                     for (j = 0; j < circles.length; j ++) {
                         if (explosions[i].intersects(circles[j])) {
                             circles[j].state.dead = true;
+                            score ++;
                         }
                     }
                 }
