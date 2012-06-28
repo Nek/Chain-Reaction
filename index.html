@@ -188,13 +188,15 @@
             level1.add(b(circle_thingy));
             level1.add(b(circle_thingy));
 
+            var gameScreen = b('scene').band([0, Number.MAX_VALUE]);
+            gameScreen.add(level1);
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
-            var startLevel = function (level) {
-                player.load(level).play();
+            var startGame = function (level) {
+                player.load(gameScreen).play();
             };
 
-            startLevel(level1);
+            startGame(level1);
         }
     </script>
 </head>
