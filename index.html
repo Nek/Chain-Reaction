@@ -195,8 +195,15 @@
                 this.$.xdata.text.lines = "Clicks: " + clicks;
                 });
 
+            var scoreHUD = b("scoreHUD").band([0, Number.MAX_VALUE]).text([WIDTH - 63,10], "Score: 0", 12, "Arial");
+            scoreHUD.modify(function(){
+                this.$.xdata.text.lines = "Score: " + score;
+            });
+
             gameScreen.add(level1);
             gameScreen.add(clicksHUD);
+            gameScreen.add(scoreHUD);
+
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
             var startGame = function (level) {
