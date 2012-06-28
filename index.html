@@ -189,7 +189,14 @@
             level1.add(b(circle_thingy));
 
             var gameScreen = b('scene').band([0, Number.MAX_VALUE]);
+            var clicksHUD = b("clicksHUD").band([0, Number.MAX_VALUE]).text([10,10], "Clicks: 3", 12, "Arial");
+            clicksHUD.on(C.X_MCLICK, function(){
+                clicks = --clicks < 0 ? 0 : clicks;
+                this.$.xdata.text.lines = "Clicks: " + clicks;
+                });
+
             gameScreen.add(level1);
+            gameScreen.add(clicksHUD);
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
             var startGame = function (level) {
