@@ -103,12 +103,26 @@
             };
 
             var clicks = 3;
-            var score = 0;
+            var scores = 0;
+            var chainscores = 0,
+                prevscores = 0;
+
+            var scoreChain = function() {
+                var p = chainscores;
+                chainscores = chainscores + prevscores;
+                prevscores = p;
+            };
+
+            var startChain = function() {
+                scores += chainscores;
+                prevscores = 1;
+                chainscores = 1;
+            };
 
             var handler = function (evt, time) {
                     if (clicks > 0 && this.$.contains(evt.pos)) {
                         this.dead = true;
-                        score ++;
+                        startChain();
                     }
                 };
             var explodeDead = function(time) {
@@ -156,7 +170,7 @@
                     for (j = 0; j < circles.length; j ++) {
                         if (explosions[i].intersects(circles[j])) {
                             circles[j].state.dead = true;
-                            score ++;
+                            scoreChain();
                         }
                     }
                 }
@@ -197,7 +211,7 @@
 
             var scoreHUD = b("scoreHUD").band([0, Number.MAX_VALUE]).text([WIDTH - 63,10], "Score: 0", 12, "Arial");
             scoreHUD.modify(function(){
-                this.$.xdata.text.lines = "Score: " + score;
+                this.$.xdata.text.lines = "Score: " + (scores + chainscores);
             });
 
             gameScreen.add(level1);
