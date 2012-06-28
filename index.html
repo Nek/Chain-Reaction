@@ -139,11 +139,11 @@
                     .xscale([0, 1], [1, 6], C.E_BIN)
                     .alpha([0, 1], [1, 0], C.E_BIN)
                     .modify(function(t){
-                                            //TODO: remove workaround and use proper t > 1
-                                            if (t > .9) {
-                                                this.$.parent.remove(this.$);
-                                            }
-                                        });
+                        //TODO: remove workaround and use proper t > 1
+                        if (t > .9) {
+                            this.$.parent.remove(this.$);
+                        }
+                    });
 
             var detectCollisions = function(t) {
                 var circles = [];
