@@ -105,7 +105,7 @@
             var clicks = 3;
 
             var handler = function (evt, time) {
-                    if (this.$.contains(evt.pos)) {
+                    if (clicks > 0 && this.$.contains(evt.pos)) {
                         this.dead = true;
                     }
                 };
