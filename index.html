@@ -153,7 +153,7 @@
                     .alpha([0, 1], [1, 0], C.E_BIN)
                     .modify(function(t){
                         //TODO: remove workaround and use proper t > 1
-                        if (t > .9) {
+                        if (t > 1) {
                             this.$.parent.remove(this.$);
                         }
                     });
@@ -201,7 +201,8 @@
             gameScreen.add(scoreHUD);
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
-            player.debug = false;
+            player.debug = true;
+            player.liveDebug = true;
             var startGame = function (level) {
                 player.load(gameScreen).play();
             };
