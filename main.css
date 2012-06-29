@@ -8,7 +8,7 @@
 body {
 	background-color: #fff;
 	font-family: sans-serif;
-	margin-right: 50%;
+	margin-right: 10%;
 	margin-left: 10%;
 	margin-bottom: 80px;
 }
@@ -21,10 +21,12 @@ pre {
 }
 
 h1 {
-	margin-top: 80px;
+	margin-top: 40px;
 	padding-bottom: 3px;
 	margin-bottom: 2.4em;
 	border-bottom: 1px solid #ccc;
+    font-size: 1em;
+    width: 600px;
 }
 
 hr {
