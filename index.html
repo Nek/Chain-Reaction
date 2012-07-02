@@ -136,9 +136,9 @@
                 }
             };
 
-            var circle_thingy = b("circle thingy").band([0, Number.MAX_VALUE]).circle([0, 0], RADIUS)
-                    .fill(fhsv(1, 1, 1, 1))
-                    .stroke(fhsv(1, .5, .5, 1))
+            var circle_thingy = b("circle thingy")
+                    .circle([0, 0], RADIUS)
+                    .nostroke()
                     .modify(explodeDead)
                     .modify(countFrames)
                     .modify(onFrame(1, init))
