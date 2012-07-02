@@ -147,13 +147,11 @@
                     .on(C.X_MCLICK, handler);
 
             var explosion = b("explosion").circle([0, 0], RADIUS)
-                    .fill(fhsv(.5, 1, 1, 1))
-                    .stroke(fhsv(.5, .5, .5, 1))
-                    .xscale([0, 1], [1, 6], C.E_BIN)
-                    .alpha([0, 1], [1, 0], C.E_BIN)
+                    .nostroke()
+                    .xscale([0, 2], [1, 6], C.E_BINOUT)
+                    .alpha([2, 3], [1, 0], C.E_BIN)
                     .modify(function(t){
-                        //TODO: remove workaround and use proper t > 1
-                        if (t > .9) {
+                        if (t > 3) {
                             this.$.parent.remove(this.$);
                         }
                     });
