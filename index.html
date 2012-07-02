@@ -201,8 +201,7 @@
             gameScreen.add(scoreHUD);
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
-            player.debug = true;
-            player.liveDebug = true;
+            player.debug = false;
             var startGame = function (level) {
                 player.load(gameScreen).play();
             };
