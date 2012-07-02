@@ -130,7 +130,7 @@
                     var exp = b(explosion);
                     exp.v.state.x = this.x;
                     exp.v.state.y = this.y;
-                    exp.band([time, time+1]);
+                    exp.band([time, Number.MAX_VALUE]);
                     this.$.parent.add(exp);
                     this.$.parent.remove(this.$);
                 }
