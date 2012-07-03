@@ -201,14 +201,16 @@
                         this.$.xdata.text.lines = "Score: " + (scores + chainscores);
                     });
 
-            gameScreen.add(level1);
-            gameScreen.add(clicksHUD);
-            gameScreen.add(scoreHUD);
 
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
             var startGame = function (level) {
                 player.load(gameScreen).play();
+            var levelHolder = b("holder");
+            gameScreen
+                    .add(levelHolder)
+                    .add(clicksHUD)
+                    .add(scoreHUD);
             };
 
             startGame(level1);
