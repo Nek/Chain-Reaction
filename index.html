@@ -119,7 +119,7 @@
                 chainscores = 1;
             };
 
-            var handler = function (evt, time) {
+            var circleClicked = function (evt, time) {
                     if (clicks > 0 && this.$.contains(evt.pos)) {
                         this.dead = true;
                         startChain();
@@ -144,7 +144,7 @@
                     .modify(onFrame(1, init))
                     .modify(afterFrame(1, move))
                     .modify(afterFrame(1, updateSpeed))
-                    .on(C.X_MCLICK, handler);
+                    .on(C.X_MCLICK, circleClicked);
 
             var explosion = b("explosion").circle([0, 0], RADIUS)
                     .nostroke()
