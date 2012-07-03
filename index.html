@@ -176,8 +176,8 @@
             };
 
             var level1 = b('level')
-                .modify(countFrames)
-                .modify(detectCollisions);
+                    .modify(countFrames)
+                    .modify(detectCollisions);
             var counter = 22;
             while (counter -- > 0) {
                 level1.add(b(circle_thingy).fill(fhsv(Math.random(),.7, 1, 1)));
