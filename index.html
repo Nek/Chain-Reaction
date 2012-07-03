@@ -148,7 +148,7 @@
 
             var explosion = b("explosion").circle([0, 0], RADIUS)
                     .nostroke()
-                    .fill(fhsv(1,1,1,1))
+                    .fill("#fff")
                     .xscale([0, 2], [1, 6], C.E_BINOUT)
                     .alpha([2, 3], [1, 0], C.E_BIN)
                     .modify(function(t){
@@ -180,17 +180,23 @@
                 .modify(detectCollisions);
             var counter = 22;
             while (counter -- > 0) {
-                level1.add(b(circle_thingy).fill(fhsv(Math.random(), 1, 1, 1)));
+                level1.add(b(circle_thingy).fill(fhsv(Math.random(),.7, 1, 1)));
             };
             var gameScreen = b('scene');
-            var clicksHUD = b("clicksHUD").text([WIDTH - 35,20], "Clicks: 3", 12, "Arial");
+            var clicksHUD = b("clicksHUD")
+                    .text([WIDTH - 45,25], "Clicks: 3", 16, "Arial")
+                    .fill("#fff")
+                    .nostroke();
 
             clicksHUD.on(C.X_MCLICK, function(){
                 clicks = --clicks < 0 ? 0 : clicks;
                 this.$.xdata.text.lines = "Clicks: " + clicks;
                 });
 
-            var scoreHUD = b("scoreHUD").text([35,20], "Score: 0", 12, "Arial");
+            var scoreHUD = b("scoreHUD")
+                    .text([45,25], "Score: 0", 16, "Arial")
+                    .fill("#fff")
+                    .nostroke();
             scoreHUD.modify(function(){
                 this.$.xdata.text.lines = "Score: " + (scores + chainscores);
             });
@@ -199,7 +205,7 @@
             gameScreen.add(clicksHUD);
             gameScreen.add(scoreHUD);
 
-            var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{'width':WIDTH, 'height':HEIGHT}});
+            var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
             var startGame = function (level) {
                 player.load(gameScreen).play();
