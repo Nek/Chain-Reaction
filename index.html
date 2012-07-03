@@ -202,6 +202,13 @@
                     });
 
 
+            var welcomeScreen = b("welcomeScreen");
+            welcomeScreen
+                    .text([WIDTH/2, HEIGHT/2], "Chain Reaction!", 32, "Arial")
+                    .fill("#fff")
+                    .nostroke()
+                    .on(C.X_MCLICK, startGame);
+
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
             player.debug = false;
             var startGame = function (level) {
