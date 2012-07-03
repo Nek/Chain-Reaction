@@ -148,6 +148,7 @@
 
             var explosion = b("explosion").circle([0, 0], RADIUS)
                     .nostroke()
+                    .fill(fhsv(1,1,1,1))
                     .xscale([0, 2], [1, 6], C.E_BINOUT)
                     .alpha([2, 3], [1, 0], C.E_BIN)
                     .modify(function(t){
