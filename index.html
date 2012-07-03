@@ -187,12 +187,11 @@
             var clicksHUD = b("clicksHUD")
                     .text([WIDTH - 45,25], "Clicks: 3", 16, "Arial")
                     .fill("#fff")
-                    .nostroke();
-
-            clicksHUD.on(C.X_MCLICK, function(){
-                clicks = --clicks < 0 ? 0 : clicks;
-                this.$.xdata.text.lines = "Clicks: " + clicks;
-                });
+                    .nostroke()
+                    .on(C.X_MCLICK, function(){
+                        clicks = --clicks < 0 ? 0 : clicks;
+                        this.$.xdata.text.lines = "Clicks: " + clicks;
+                    });
 
             var scoreHUD = b("scoreHUD")
                     .text([45,25], "Score: 0", 16, "Arial")
