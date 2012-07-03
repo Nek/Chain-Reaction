@@ -181,8 +181,9 @@
             var counter = 22;
             while (counter -- > 0) {
                 level1.add(b(circle_thingy).fill(fhsv(Math.random(),.7, 1, 1)));
-            };
-            var gameScreen = b('scene');
+            }
+
+            var gameScreen = b('gameScreen');
             var clicksHUD = b("clicksHUD")
                     .text([WIDTH - 45,25], "Clicks: 3", 16, "Arial")
                     .fill("#fff")
