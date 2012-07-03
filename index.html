@@ -224,7 +224,7 @@
 
             var currentLevel;
             var startLevel = function (level) {
-                var newLevel = level;
+                var newLevel = b(level);
                 levelHolder.remove(currentLevel);
                 levelHolder.add(newLevel);
                 currentLevel = newLevel;
