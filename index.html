@@ -196,10 +196,10 @@
             var scoreHUD = b("scoreHUD")
                     .text([45,25], "Score: 0", 16, "Arial")
                     .fill("#fff")
-                    .nostroke();
-            scoreHUD.modify(function(){
-                this.$.xdata.text.lines = "Score: " + (scores + chainscores);
-            });
+                    .nostroke()
+                    .modify(function(){
+                        this.$.xdata.text.lines = "Score: " + (scores + chainscores);
+                    });
 
             gameScreen.add(level1);
             gameScreen.add(clicksHUD);
