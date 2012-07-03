@@ -210,18 +210,29 @@
                     .nostroke()
                     .on(C.X_MCLICK, startGame);
 
-            var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
-            player.debug = false;
-            var startGame = function (level) {
-                player.load(gameScreen).play();
             var levelHolder = b("holder");
             gameScreen
                     .add(levelHolder)
                     .add(clicksHUD)
                     .add(scoreHUD);
+
+            var startGame = function() {
+                scene.add(gameScreen);
+                startLevel(level1);
             };
 
-            startGame(level1);
+            var currentLevel;
+            var startLevel = function (level) {
+                var newLevel = level;
+                levelHolder.remove(currentLevel);
+                levelHolder.add(newLevel);
+                currentLevel = newLevel;
+            };
+
+            var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
+            player.load(scene).play();
+
+            startGame();
         }
     </script>
 </head>
