@@ -220,16 +220,33 @@
             gameScreen
                     .add(levelHolder)
                     .add(clicksHUD)
-                    .add(scoreHUD);
-
-            var currentLevel;
-            var startLevel = function (level) {
-                var newLevel = b(level);
-                levelHolder.remove(currentLevel);
-                levelHolder.add(newLevel);
-                currentLevel = newLevel;
+                    .add(scoreHUD)
+                    .on(C.X_KPRESS, function(evt) {
+                                    if (evt.key === 114) {
+                                        restartCurrentLevel();
+                                    }
+                                });
+            var restartCurrentLevel = function() {
+                clicks = 3;
+                chainscores = 0;
+                prevscores = 0;
+                scores = scoresBeforeLevel;
+                clicksHUD.v.xdata.text.lines = "Clicks: " + clicks;
+                startLevel(currentLevelTemplate);
             };
 
+            var activeLevel;
+            var currentLevelTemplate;
+
+            var scoresBeforeLevel;
+            var startLevel = function (level) {
+                scoresBeforeLevel = scores;
+                currentLevelTemplate = level;
+                var newLevel = b(currentLevelTemplate);
+                if (activeLevel) levelHolder.remove(activeLevel);
+                levelHolder.add(newLevel);
+                activeLevel = newLevel;
+            };
             var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
             player.load(scene).play();
         }
