@@ -118,7 +118,7 @@
                 chainscores = 1;
             };
 
-            var circleClicked = function (evt, time) {
+            var circleClicked = function (evt) {
                     if (clicks > 0 && this.$.contains(evt.pos)) {
                         this.dead = true;
                         startChain();
@@ -201,6 +201,7 @@
                     });
 
             var scene = b("scene");
+
 
             var welcomeScreen = b("welcomeScreen");
             welcomeScreen
