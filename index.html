@@ -174,13 +174,18 @@
                 }
             };
 
-            var level1 = b('level')
-                    .modify(countFrames)
-                    .modify(detectCollisions);
-            var counter = 22;
-            while (counter -- > 0) {
-                level1.add(b(circle_thingy).fill(fhsv(Math.random(),.7, 1, 1)));
-            }
+
+
+            var getLevelTemplate = function(n) {
+                var level = b('level')
+                        .modify(countFrames)
+                        .modify(detectCollisions);
+                var counter = 42-(2*n);
+                while (counter -- > 0) {
+                    level.add(b(circle_thingy).fill(fhsv(Math.random(),.7, 1, 1)));
+                }
+                return {level: level, clicks: 3};
+            };
 
             var gameScreen = b('gameScreen');
             var clicksHUD = b("clicksHUD")
@@ -211,7 +216,7 @@
                     .on(C.X_MCLICK, function() {
                             scene.remove(welcomeScreen);
                             scene.add(gameScreen);
-                            startLevel(level1);
+                            startLevel(1);
                     });
 
             scene.add(welcomeScreen);
@@ -230,22 +235,29 @@
                                     }
                                 });
             var restartCurrentLevel = function() {
-                clicks = 3;
-                chainscores = 0;
-                prevscores = 0;
                 scores = scoresBeforeLevel;
-                clicksHUD.v.xdata.text.lines = "Clicks: " + clicks;
-                startLevel(currentLevelTemplate);
+                startLevel(currentLevelNumber);
+            };
+
+            var startNextLevel = function() {
+                currentLevelNumber += 1;
+                scoreAndStartChain();
+                startLevel(currentLevelNumber);
             };
 
             var activeLevel;
-            var currentLevelTemplate;
+            var currentLevelNumber = 1;
 
-            var scoresBeforeLevel;
-            var startLevel = function (level) {
+            var scoresBeforeLevel = 0;
+            var startLevel = function (n) {
+                currentLevelNumber = n;
                 scoresBeforeLevel = scores;
-                currentLevelTemplate = level;
-                var newLevel = b(currentLevelTemplate);
+                var currentLevelTemplate = getLevelTemplate(n);
+                clicks = currentLevelTemplate.clicks;
+                chainscores = 0;
+                prevscores = 0;
+                clicksHUD.v.xdata.text.lines = "Clicks: " + clicks;
+                var newLevel = b(currentLevelTemplate.level);
                 if (activeLevel) levelHolder.remove(activeLevel);
                 levelHolder.add(newLevel);
                 activeLevel = newLevel;
