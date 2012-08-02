@@ -206,6 +206,14 @@ function start() {
                 this.$.xdata.text.lines = "Score: " + (scores + chainscores);
             });
 
+    var levelHUD = b("levelHUD")
+	    .text([WIDTH/2, 25], "Level 1", 16, "Arial")
+	    .fill("#fff")
+	    .nostroke()
+	    .modify(function () {
+		this.$.xdata.text.lines = "Level " + currentLevelNumber;
+	    });
+
     var scene = b("scene");
 
 
@@ -227,6 +235,7 @@ function start() {
         .add(levelHolder)
         .add(clicksHUD)
         .add(scoreHUD)
+	.add(levelHUD)
         .on(C.X_KPRESS, function(evt) {
             if (evt.key === 114) {
                 restartCurrentLevel();
