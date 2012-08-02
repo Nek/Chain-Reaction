@@ -104,9 +104,13 @@ function start() {
         chainscores = 1;
     };
 
-    var circleClicked = function (evt) {
-        if (clicks > 0 && this.$.contains(evt.pos)) {
-            this.dead = true;
+    var placeBomb = function (evt, time) {
+	if (clicks > 0) {
+	    var exp = b(explosion);
+            exp.v.state.x = evt.pos[0];
+            exp.v.state.y = evt.pos[1];
+            exp.band([time, Number.MAX_VALUE]);
+            this.$.add(exp);
             scoreAndStartChain();
 	}
     };
@@ -129,9 +133,8 @@ function start() {
             .modify(countFrames)
             .modify(onFrame(1, init))
             .modify(afterFrame(1, move))
-            .modify(afterFrame(1, updateSpeed))
-            .on(C.X_MCLICK, doIf(inState("game"), circleClicked));
-
+            .modify(afterFrame(1, updateSpeed));
+            
     var explosion = b("explosion").circle([0, 0], RADIUS)
             .nostroke()
             .fill("#fff")
@@ -179,7 +182,8 @@ function start() {
     var getLevelTemplate = function(n) {
         var level = b('level')
 		.modify(countFrames)
-		.modify(doIf(inState("game"), detectCollisions));
+		.modify(doIf(inState("game"), detectCollisions))
+		.on(C.X_MCLICK, placeBomb);
         var counter = 42-(2*n);
         while (counter -- > 0) {
 	    level.add(b(circle_thingy).fill(fhsv(Math.random(), 0.7, 1, 1)));
