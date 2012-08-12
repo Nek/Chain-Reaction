@@ -148,7 +148,7 @@ function start() {
 		    .nostroke()
 		    .fill("#fff")
 		    .xscale([0, 2], [1, 6], C.E_BINOUT)
-		    .alpha([2, 3], [1, 0], C.E_BIN)
+		    .alpha([2.2, 3], [1, 0], C.E_BIN)
 	    )
 	    .add(
 		b("blinker")
@@ -156,9 +156,6 @@ function start() {
 			b("text").text([-3, 0], "", 16, "Arial")
 			    .fill('#000')
 			    .nostroke()
-			    .alpha([0,0.2], [0,1])
-			    .alpha([0.2,0.4], [1,0])
-			    .loop(C.R_REPEAT)
 		    )
 		    .alpha([0, 0.5], [0, 0])
 		    .alpha([0.5, 1], [0, 1])
