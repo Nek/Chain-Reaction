@@ -121,6 +121,7 @@ function start() {
             exp.v.state.x = this.x;
             exp.v.state.y = this.y;
             exp.band([time, Number.MAX_VALUE]);
+	    exp.v.children[1].children[0].xdata.text.lines = "+"+~~(Math.random()*1000);
             this.$.parent.add(exp);
             this.$.parent.remove(this.$);
         }
@@ -137,18 +138,32 @@ function start() {
             
     var explosion = b("explosion")
 	    .band([0,3.5])
-	    .add(
-	b("circle").circle([0, 0], RADIUS)
-            .nostroke()
-            .fill("#fff")
-	    .xscale([0, 2], [1, 6], C.E_BINOUT)
-            .alpha([2, 3], [1, 0], C.E_BIN)
-    )
             .modify(function(t){
                 if (t > 3) {
                     this.$.parent.remove(this.$);
                 }
-            });
+            })
+	    .add(
+		b("circle").circle([0, 0], RADIUS)
+		    .nostroke()
+		    .fill("#fff")
+		    .xscale([0, 2], [1, 6], C.E_BINOUT)
+		    .alpha([2, 3], [1, 0], C.E_BIN)
+	    )
+	    .add(
+		b("blinker")
+		    .add(
+			b("text").text([-3, 0], "", 16, "Arial")
+			    .fill('#000')
+			    .nostroke()
+			    .alpha([0,0.2], [0,1])
+			    .alpha([0.2,0.4], [1,0])
+			    .loop(C.R_REPEAT)
+		    )
+		    .alpha([0, 0.5], [0, 0])
+		    .alpha([0.5, 1], [0, 1])
+		    .alpha([2, 3], [1, 0], C.E_BIN)
+	    );
 
     var detectCollisions = function(t) {
         var circles = [];
@@ -164,7 +179,7 @@ function start() {
 	
 	for (i = 0; i < explosions.length; i ++) {
             for (j = 0; j < circles.length; j ++) {
-                if (explosions[i].intersects(circles[j])) {
+	        if (explosions[i].children[0].intersects(circles[j])) {
                     circles[j].state.dead = true;
                     scoreExplosion();
                 }
