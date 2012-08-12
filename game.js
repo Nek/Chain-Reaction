@@ -96,6 +96,7 @@ function start() {
         var p = chainscores;
         chainscores = chainscores + prevscores;
         prevscores = p;
+	return p;
     };
 
     var scoreAndStartChain = function() {
@@ -121,7 +122,7 @@ function start() {
             exp.v.state.x = this.x;
             exp.v.state.y = this.y;
             exp.band([time, Number.MAX_VALUE]);
-	    exp.v.children[1].children[0].xdata.text.lines = "+"+~~(Math.random()*1000);
+	    exp.v.children[1].children[0].xdata.text.lines = "+"+this._.scores;
             this.$.parent.add(exp);
             this.$.parent.remove(this.$);
         }
@@ -178,7 +179,7 @@ function start() {
             for (j = 0; j < circles.length; j ++) {
 	        if (explosions[i].children[0].intersects(circles[j])) {
                     circles[j].state.dead = true;
-                    scoreExplosion();
+		    circles[j].state.scores = scoreExplosion();
                 }
             }
         }
