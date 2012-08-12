@@ -135,11 +135,15 @@ function start() {
             .modify(afterFrame(1, move))
             .modify(afterFrame(1, updateSpeed));
             
-    var explosion = b("explosion").circle([0, 0], RADIUS)
+    var explosion = b("explosion")
+	    .band([0,3.5])
+	    .add(
+	b("circle").circle([0, 0], RADIUS)
             .nostroke()
             .fill("#fff")
-            .xscale([0, 2], [1, 6], C.E_BINOUT)
+	    .xscale([0, 2], [1, 6], C.E_BINOUT)
             .alpha([2, 3], [1, 0], C.E_BIN)
+    )
             .modify(function(t){
                 if (t > 3) {
                     this.$.parent.remove(this.$);
