@@ -136,7 +136,8 @@ function start() {
             .modify(countFrames)
             .modify(onFrame(1, init))
             .modify(afterFrame(1, move))
-            .modify(afterFrame(1, updateSpeed));
+            .modify(afterFrame(1, updateSpeed))
+	    .alpha([0,3],[0,1]);
             
     var explosion = b("explosion")
 	    .band([0,3.5])
@@ -209,7 +210,7 @@ function start() {
         var counter = 42-(2*n);
         while (counter -- > 0) {
 	    var col = fhsv(Math.random(), 0.7, 1, 1);
-	    var circ = b(circle_thingy).fill(col);
+	    var circ = b(circle_thingy).fill(col).band([player.state.time, Number.MAX_VALUE]);
 	    circ.data({color:col});
 	    level.add(circ);
         }
