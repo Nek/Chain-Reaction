@@ -157,11 +157,15 @@ function start() {
 			b("text").text([-3, 0], "", 16, "Arial")
 			    .fill('#000')
 			    .nostroke()
+			    .band([0, 0.4])
+			    .alpha([0,0.2], [0,1])
+			    .alpha([0.2,0.4], [1,0])
+			    .loop(C.R_REPEAT)
 		    )
 		    .alpha([0, 0.5], [0, 0])
 		    .alpha([0.5, 1], [0, 1])
 		    .alpha([2, 3], [1, 0], C.E_BIN)
-	    );
+	    ); 
 
     var detectCollisions = function(t) {
         var circles = [];
