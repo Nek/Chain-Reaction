@@ -235,6 +235,19 @@ function start() {
 		this.$.xdata.text.lines = "Level " + currentLevelNumber;
 	    });
 
+    var message = b("message")
+	.text([WIDTH/2, HEIGHT/2], "!", 32, "Arial")
+	.fill("#fff")
+	.nostroke()
+	.alpha([0,1],[0,1])
+	.alpha([1,2],[1,1])
+	.alpha([2,3],[1,0])
+	.modify(function (t) {
+	    if (t > 3) {
+                this.$.parent.remove(this.$);
+            }
+	});
+    
     var scene = b("scene");
 
 
@@ -250,6 +263,15 @@ function start() {
         });
 
     scene.add(welcomeScreen);
+
+    var showMessage = function (txt) {
+	console.log(txt);
+	var m = b(message);
+	console.log(m);
+	m.band([player.state.time, Number.MAX_VALUE]);
+	m.x.text.lines = txt;
+	gameScreen.add(m);
+    };
 
     var levelHolder = b("holder");
     gameScreen
@@ -287,11 +309,12 @@ function start() {
         clicks = currentLevelTemplate.clicks;
         chainscores = 0;
         prevscores = 0;
-        clicksHUD.v.xdata.text.lines = "Clicks: " + clicks;
+        clicksHUD.x.text.lines = "Clicks: " + clicks;
         var newLevel = b(currentLevelTemplate.level);
         if (activeLevel) levelHolder.remove(activeLevel);
         levelHolder.add(newLevel);
         activeLevel = newLevel;
+	showMessage("Level " + currentLevelNumber);
     };
     var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
     player.load(scene).play();
