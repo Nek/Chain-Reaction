@@ -250,6 +250,7 @@ function start() {
 	.alpha([0,1],[0,1])
 	.alpha([1,2],[1,1])
 	.alpha([2,3],[1,0])
+	.xscale([0,3],[0.8, 1.2])
 	.modify(function (t) {
 	    if (t > 3) {
                 this.$.parent.remove(this.$);
