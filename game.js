@@ -122,6 +122,7 @@ function start() {
             exp.v.state.x = this.x;
             exp.v.state.y = this.y;
             exp.band([time, Number.MAX_VALUE]);
+	    exp.v.children[1].children[0].xdata.text.fill.color = this.$.__data.color;
 	    exp.v.children[1].children[0].xdata.text.lines = "+"+this._.scores;
             this.$.parent.add(exp);
             this.$.parent.remove(this.$);
@@ -207,7 +208,10 @@ function start() {
 		.on(C.X_MCLICK, placeBomb);
         var counter = 42-(2*n);
         while (counter -- > 0) {
-	    level.add(b(circle_thingy).fill(fhsv(Math.random(), 0.7, 1, 1)));
+	    var col = fhsv(Math.random(), 0.7, 1, 1);
+	    var circ = b(circle_thingy).fill(col);
+	    circ.data({color:col});
+	    level.add(circ);
         }
 	return {level: level, clicks: 3};
     };
@@ -271,7 +275,6 @@ function start() {
     var showMessage = function (txt) {
 	console.log(txt);
 	var m = b(message);
-	console.log(m);
 	m.band([player.state.time, Number.MAX_VALUE]);
 	m.x.text.lines = txt;
 	gameScreen.add(m);
