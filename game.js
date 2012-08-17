@@ -201,6 +201,13 @@ function start() {
 	    console.log("game on");
     };
 
+    var showGameOver = function() {
+        scene.remove(gameScreen);
+        showMessage("You have scored " + (scores + chainscores), function(t) {
+            if (t > 3) scene.add(welcomeScreen);
+        });
+    };
+
     var getLevelTemplate = function(n) {
         var level = b('level')
 		.modify(countFrames)
