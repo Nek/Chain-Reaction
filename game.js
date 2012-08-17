@@ -311,6 +311,11 @@ function start() {
     
     var scoresBeforeLevel = 0;
     var startLevel = function (n) {
+        if (n < 2) {
+            scores = 0;
+            scoresBeforeLevel = 0;
+            clicks = 0;
+        }
         currentLevelNumber = n;
         scoresBeforeLevel = scores;
         var currentLevelTemplate = getLevelTemplate(n);
