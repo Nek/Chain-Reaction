@@ -86,7 +86,7 @@ function start() {
         }
     };
 
-    var clicks = 3;
+    var clicks = 0;
     var scores = 0;
     var chainscores = 0,
 	prevscores = 0;
