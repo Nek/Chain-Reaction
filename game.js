@@ -273,12 +273,16 @@ function start() {
 
     scene.add(welcomeScreen);
 
-    var showMessage = function (txt) {
-	console.log(txt);
-	var m = b(message);
+    var showMessage = function (txt, callback) {
+	var m = b(message);   
 	m.band([player.state.time, Number.MAX_VALUE]);
-	m.x.text.lines = txt;
-	gameScreen.add(m);
+        m.x.text.lines = txt;
+        if(callback !== undefined) {  
+            m.modify(function(t){
+                callback(t);
+            });
+        }
+	scene.add(m);
     };
 
     var levelHolder = b("holder");
