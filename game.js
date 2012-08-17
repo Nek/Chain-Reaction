@@ -195,7 +195,7 @@ function start() {
 	else 
 	    if (clicks === 0 && explosions.length === 0 && circles.length > 0 && !newExplosion) {
 		console.log("failure");
-		restartCurrentLevel();
+		showGameOver();
 	    }
 	else
 	    console.log("game on");
