@@ -314,7 +314,7 @@ function start() {
         currentLevelNumber = n;
         scoresBeforeLevel = scores;
         var currentLevelTemplate = getLevelTemplate(n);
-        clicks = currentLevelTemplate.clicks;
+        clicks += currentLevelTemplate.clicks;
         chainscores = 0;
         prevscores = 0;
         clicksHUD.x.text.lines = "Clicks: " + clicks;
