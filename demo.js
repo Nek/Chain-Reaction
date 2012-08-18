@@ -1,4 +1,4 @@
-window.addEventListener('domready', function() {
+$(function() {
     anm.M.collisions.pathDriven = true;
     var b = Builder._$, C = anm.C;
 
