@@ -1,3 +1,4 @@
+window.addEvent('domready', function() {
     anm.M.collisions.pathDriven = true;
     var b = Builder._$, C = anm.C;
 
@@ -326,3 +327,4 @@
     };
     var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
     player.load(scene).play();
+});
