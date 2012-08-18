@@ -1,3 +1,4 @@
+/*
 Chain Reaction -- a game built on Animatron engine.
 ---
  name: Chain Reaction
@@ -12,3 +13,4 @@ Chain Reaction -- a game built on Animatron engine.
    - https://raw.github.com/Animatron/player/master/animatron_import.js
  normalize_css: no
  ...
+*/
