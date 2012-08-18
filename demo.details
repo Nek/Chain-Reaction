@@ -8,9 +8,9 @@ Chain Reaction -- a game built on Animatron engine.
  resources:
    - https://raw.github.com/Animatron/player/master/vendor/matrix.js
    - https://raw.github.com/Animatron/player/master/anm.player.js
-   - https://raw.github.com/Animatron/player/master/anm.collisions.js
    - https://raw.github.com/Animatron/player/master/anm.builder.js
    - https://raw.github.com/Animatron/player/master/animatron_import.js
+   - https://raw.github.com/Animatron/player/master/anm.collisions.js    
  normalize_css: no
  ...
 */
