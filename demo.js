@@ -1,4 +1,4 @@
-window.addEvent('domready', function() {
+window.addEventListener('domready', function() {
     anm.M.collisions.pathDriven = true;
     var b = Builder._$, C = anm.C;
 
@@ -6,6 +6,7 @@ window.addEvent('domready', function() {
 
     var WIDTH = 600;
     var HEIGHT = 450;
+
     var RADIUS = 10;
 
     var state = "game";
