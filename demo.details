@@ -1,0 +1,14 @@
+Chain Reaction -- a game built on Animatron engine.
+---
+ name: Chain Reaction
+ description: A simple game built on Animatron engine.
+ authors:
+   - Nikita Dudnik
+ resources:
+   - https://raw.github.com/Animatron/player/master/vendor/matrix.js
+   - https://raw.github.com/Animatron/player/master/anm.player.js
+   - https://raw.github.com/Animatron/player/master/anm.collision.js
+   - https://raw.github.com/Animatron/player/master/anm.builder.js
+   - https://raw.github.com/Animatron/player/master/animatron_import.js
+ normalize_css: no
+ ...
