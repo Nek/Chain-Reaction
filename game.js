@@ -202,10 +202,13 @@ function start() {
     };
 
     var showGameOver = function() {
-        scene.remove(gameScreen);
+        gameScreen.disable();       
         showMessage("You have scored " + (scores + chainscores), function(t) {
-            if (t > 3) scene.add(welcomeScreen);
+            if (t > 3) {
+                welcomeScreen.enable();
+            }
         });
+        console.log(scene);
     };
 
     var getLevelTemplate = function(n) {
@@ -266,6 +269,7 @@ function start() {
     
     var scene = b("scene");
 
+    window.scene = scene;
 
     var welcomeScreen = b("welcomeScreen");
     welcomeScreen
@@ -273,22 +277,17 @@ function start() {
         .fill("#fff")
         .nostroke()
         .on(C.X_MCLICK, function() {
-            scene.remove(welcomeScreen);
-            scene.add(gameScreen);
+            gameScreen.enable();
+            welcomeScreen.disable();
             startLevel(1);
         });
-
     scene.add(welcomeScreen);
 
     var showMessage = function (txt, callback) {
 	var m = b(message);   
 	m.band([player.state.time, Number.MAX_VALUE]);
         m.x.text.lines = txt;
-        if(callback !== undefined) {  
-            m.modify(function(t){
-                callback(t);
-            });
-        }
+        if(callback !== undefined){m.modify(callback);}
 	scene.add(m);
     };
 
@@ -306,6 +305,10 @@ function start() {
                 startNextLevel();
             }
         });
+
+    scene.add(gameScreen);
+    gameScreen.disable();
+
     var restartCurrentLevel = function() {
         scores = scoresBeforeLevel;
         startLevel(currentLevelNumber);
