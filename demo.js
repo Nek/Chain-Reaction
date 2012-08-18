@@ -1,4 +1,3 @@
-function start() {
     anm.M.collisions.pathDriven = true;
     var b = Builder._$, C = anm.C;
 
@@ -295,6 +294,7 @@ function start() {
                 startNextLevel();
             }
         });
+
     var restartCurrentLevel = function() {
         scores = scoresBeforeLevel;
         startLevel(currentLevelNumber);
@@ -326,4 +326,3 @@ function start() {
     };
     var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
     player.load(scene).play();
-}
