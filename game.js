@@ -324,6 +324,6 @@ function start() {
         activeLevel = newLevel;
 	showMessage("Level " + currentLevelNumber);
     };
-    var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'cnvs':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
+    var player = createPlayer('gameCanvas', {'mode':C.M_DYNAMIC, 'anim':{"bgfill": { color: "#000" },'width':WIDTH, 'height':HEIGHT}});
     player.load(scene).play();
 }
