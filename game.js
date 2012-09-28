@@ -12,6 +12,18 @@ function start() {
 
     var inState = function (s) {return function () {return s === state;};};
 
+    // from underscore.js
+    var once = function(func) {
+        var ran = false;
+        var memo;
+        return function() {
+            if (ran) return memo;
+            ran = true;
+            memo = func.apply(this, arguments);
+            return memo;
+        };
+    };
+
     var countFrames = function () {
         if (this.currentFrame === undefined) this.currentFrame = 0;
         else this.currentFrame += 1;
@@ -65,10 +77,6 @@ function start() {
         this.x = Math.random() * (WIDTH - RADIUS * 5) + 2.5 * RADIUS;
         this.y = Math.random() * (HEIGHT - RADIUS * 5) + 2.5 * RADIUS;
         this.speed = [Math.random() > 0.3 ? 1 : -1, Math.random() > 0.3 ? 1 : -1];
-    };
-
-    var logFrame = function () {
-        console.log("Current frame:", this.currentFrame);
     };
 
     var move = function (t) {
@@ -189,26 +197,24 @@ function start() {
             }
         }
 	if (explosions.length === 0 && circles.length === 0) {
-	    console.log("victory");
 	    startNextLevel();
 	}
 	else 
 	    if (clicks === 0 && explosions.length === 0 && circles.length > 0 && !newExplosion) {
-		console.log("failure");
 		showGameOver();
 	    }
-	else
-	    console.log("game on");
+        // if we are on this line the game continues
     };
 
     var showGameOver = function() {
-        gameScreen.disable();       
+        //TODO: fix this workaround for now disconnected effect of parents and children enable/disable
+        gameScreen.disable(); 
+        clicksHUD.disable();
         showMessage("You have scored " + (scores + chainscores), function(t) {
             if (t > 3) {
                 welcomeScreen.enable();
             }
         });
-        console.log(scene);
     };
 
     var getLevelTemplate = function(n) {
@@ -232,6 +238,7 @@ function start() {
             .fill("#fff")
             .nostroke()
 	    .on(C.X_MCLICK, doIf(inState("game"), function () {
+                // reduce clicks
 		clicks = clicks - 1;
 		if (clicks < 0) clicks = 0;
 		this.$.xdata.text.lines = "Clicks: " + clicks;
@@ -253,6 +260,8 @@ function start() {
 		this.$.xdata.text.lines = "Level " + currentLevelNumber;
 	    });
 
+    
+
     var message = b("message")
 	.text([WIDTH/2, HEIGHT/2], "!", 32, "Arial")
 	.fill("#fff")
@@ -262,10 +271,9 @@ function start() {
 	.alpha([2,3],[1,0])
 	.xscale([0,3],[0.8, 1.2])
 	.modify(function (t) {
-	    if (t > 3) {
-                this.$.parent.remove(this.$);
-            }
+            if (t > 3) this.$.parent.remove(this.$);
 	});
+    
     
     var scene = b("scene");
 
@@ -277,17 +285,21 @@ function start() {
         .fill("#fff")
         .nostroke()
         .on(C.X_MCLICK, function() {
+            //TODO: fix this workaround for now disconnected effect of parents and children enable/disable
             gameScreen.enable();
+            clicksHUD.enable();
             welcomeScreen.disable();
             startLevel(1);
         });
     scene.add(welcomeScreen);
-
+    
+    var lastMod = null;
     var showMessage = function (txt, callback) {
 	var m = b(message);   
 	m.band([player.state.time, Number.MAX_VALUE]);
         m.x.text.lines = txt;
-        if(callback !== undefined){m.modify(callback);}
+        if (lastMod !== null) m.unmodify(lastMod);
+        if(callback !== undefined){lastMod = m.modify(callback).get_m_id();}
 	scene.add(m);
     };
 
@@ -307,7 +319,9 @@ function start() {
         });
 
     scene.add(gameScreen);
+    //TODO: fix this workaround for now disconnected effect of parents and children enable/disable
     gameScreen.disable();
+    clicksHUD.disable();
 
     var restartCurrentLevel = function() {
         scores = scoresBeforeLevel;
@@ -315,6 +329,7 @@ function start() {
     };
 
     var startNextLevel = function() {
+        // start next level
         currentLevelNumber += 1;
         scoreAndStartChain();
         startLevel(currentLevelNumber);
@@ -325,6 +340,7 @@ function start() {
     
     var scoresBeforeLevel = 0;
     var startLevel = function (n) {
+        // start level
         if (n < 2) {
             scores = 0;
             scoresBeforeLevel = 0;
