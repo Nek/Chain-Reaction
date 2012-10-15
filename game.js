@@ -240,7 +240,7 @@ function start() {
     };
 
     var updateScoresTable = function(){
-        scoresTable.x.text.lines = ["Latest scores:"];
+        scoresTable.x.text.lines = ["Highest scores:"];
         highScores.forEach(function(el, n, array){
             scoresTable.x.text.lines.push(el);
         });
