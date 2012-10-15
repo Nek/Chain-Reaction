@@ -207,15 +207,37 @@ function start() {
         // if we are on this line the game continues
     };
 
+    var highScores = [];
+
     var showGameOver = function() {
         //TODO: fix this workaround for now disconnected effect of parents and children enable/disable
         gameScreen.disable(); 
         clicksHUD.disable();
-        showMessage("You have scored " + (scores + chainscores), function(t) {
+        var finalScores = scores + chainscores;
+
+        highScores.push(finalScores);
+        highScores.sort(function(a,b) {return a < b;});
+        
+        var m = highScores[0] === finalScores ? "You've got a highscore " : "You have scored ";
+        
+        if (highScores.length > 3) highScores.pop();
+        
+        showMessage(m + finalScores, function(t) {
             if (t > 3) {
+                updateScoresTable();
                 welcomeScreen.enable();
+                scoresTable.enable();
             }
         });
+    };
+
+    var updateScoresTable = function(){
+
+        scoresTable.x.text.lines = ["Latest scores:"];
+        highScores.forEach(function(el, n, array){
+            scoresTable.x.text.lines.push(el);
+        });
+
     };
 
     var getLevelTemplate = function(n) {
@@ -279,10 +301,15 @@ function start() {
     var scene = b("scene");
 
     window.scene = scene;
+    
+    var scoresTable = b("scoresTable");
+    scoresTable
+        .text([WIDTH/2, 50], "Latest scores:", 32, "Arial")
+    .fill("#fff").nostroke();
 
     var welcomeScreen = b("welcomeScreen");
     welcomeScreen
-        .text([WIDTH/2, HEIGHT/2], "Click to start!", 32, "Arial")
+        .text([WIDTH/2, HEIGHT - 50], "Click to start!", 32, "Arial")
         .fill("#fff")
         .nostroke()
         .on(C.X_MCLICK, function() {
@@ -290,8 +317,10 @@ function start() {
             gameScreen.enable();
             clicksHUD.enable();
             welcomeScreen.disable();
+            scoresTable.disable();
             startLevel(1);
         });
+    scene.add(scoresTable);
     scene.add(welcomeScreen);
     
     var showMessage = function (txt, callback) {
