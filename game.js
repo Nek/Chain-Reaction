@@ -149,7 +149,7 @@ function start() {
     var explosion = b("explosion")
 	    .band([0,3.5])
             .modify(function(t){
-                if (t > 3) {
+                if (t > 4) {
                     this.$.parent.remove(this.$);
                 }
             })
@@ -158,7 +158,8 @@ function start() {
 		    .nostroke()
 		    .fill("#fff")
 		    .xscale([0, 2], [1, 6], C.E_BINOUT)
-		    .alpha([2.2, 3], [1, 0], C.E_BIN)
+                    .xscale([3, 4], [6, 0.01], C.E_BINOUT)
+		    .alpha([3, 4], [1, 0], C.E_BIN)
 	    )
 	    .add(
 		b("blinker")
