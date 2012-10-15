@@ -1,4 +1,7 @@
 function start() {
+    var highScores = $.jStorage.get("animatron-chain-reaction-scores");
+    if (highScores === null) highScores = [];
+
     anm.M.collisions.pathDriven = true;
     var b = Builder._$, C = anm.C;
 
@@ -207,8 +210,6 @@ function start() {
         // if we are on this line the game continues
     };
 
-    var highScores = [];
-
     var showGameOver = function() {
         //TODO: fix this workaround for now disconnected effect of parents and children enable/disable
         gameScreen.disable(); 
@@ -220,24 +221,29 @@ function start() {
         
         var m = highScores[0] === finalScores ? "You've got a highscore " : "You have scored ";
         
-        if (highScores.length > 3) highScores.pop();
+        if (highScores.length > 7) highScores.pop();
+
+        
+
+        $.jStorage.set("animatron-chain-reaction-scores", highScores);
+
+        //updateScoresTable();
         
         showMessage(m + finalScores, function(t) {
             if (t > 3) {
-                updateScoresTable();
+                
                 welcomeScreen.enable();
                 scoresTable.enable();
+                updateScoresTable();
             }
         });
     };
 
     var updateScoresTable = function(){
-
         scoresTable.x.text.lines = ["Latest scores:"];
         highScores.forEach(function(el, n, array){
             scoresTable.x.text.lines.push(el);
         });
-
     };
 
     var getLevelTemplate = function(n) {
@@ -304,8 +310,12 @@ function start() {
     
     var scoresTable = b("scoresTable");
     scoresTable
-        .text([WIDTH/2, 50], "Latest scores:", 32, "Arial")
-    .fill("#fff").nostroke();
+        .text([WIDTH/2 + 10, 50], "Latest scores: ", 32, "Arial")
+        .fill("#fff").nostroke()
+        .modify(countFrames)
+        .modify(afterFrame(1,function(){
+            updateScoresTable();
+        }));
 
     var welcomeScreen = b("welcomeScreen");
     welcomeScreen
