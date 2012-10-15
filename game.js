@@ -294,13 +294,13 @@ function start() {
         });
     scene.add(welcomeScreen);
     
-    var lastMod = null;
     var showMessage = function (txt, callback) {
 	var m = b(message);   
 	m.band([player.state.time, Number.MAX_VALUE]);
         m.x.text.lines = txt;
-        if (lastMod !== null) m.unmodify(lastMod);
-        if(callback !== undefined){lastMod = m.modify(callback).get_m_id();}
+        if(callback !== undefined){
+            m.modify(callback);
+        }
 	scene.add(m);
     };
 
